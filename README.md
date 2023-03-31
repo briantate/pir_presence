@@ -40,6 +40,8 @@
 
 # UML class diagrams of PIR driver
 
+![image](media/PirDriverUml.png)
+
 # MCC Configuration Project Graph
 
 ![image](media/ProjectGraph.png)
