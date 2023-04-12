@@ -32,8 +32,7 @@ void test_ANLG_Conductor_Run_should_NotUpdateTheModelIfNoChannelIsReady(void)
     ANLG_Hardware_IsReady_ExpectAndReturn(1, STATUS_NONE_YET);
     ANLG_Hardware_IsReady_ExpectAndReturn(2, STATUS_NONE_YET);
     ANLG_Hardware_IsReady_ExpectAndReturn(3, STATUS_NONE_YET);
-    ANLG_Hardware_IsReady_ExpectAndReturn(4, STATUS_NONE_YET);
-    ANLG_Hardware_IsReady_ExpectAndReturn(5, STATUS_NONE_YET);
+
 
     ANLG_Conductor_Run();
 }
@@ -45,12 +44,11 @@ void test_ANLG_Conductor_Run_should_UpdateTheModelForChannelsWithData(void)
     ANLG_Hardware_ReadChannel_ExpectAndReturn(0, 0x1234);
     ANLG_Model_UpdateData_Expect(0, 0x1234);
     ANLG_Hardware_IsReady_ExpectAndReturn(1, STATUS_NONE_YET);
-    ANLG_Hardware_IsReady_ExpectAndReturn(2, STATUS_NONE_YET);
+    ANLG_Hardware_IsReady_ExpectAndReturn(2, STATUS_OK);
+    ANLG_Hardware_ReadChannel_ExpectAndReturn(2, 0x5678);
+    ANLG_Model_UpdateData_Expect(2, 0x5678);
+
     ANLG_Hardware_IsReady_ExpectAndReturn(3, STATUS_NONE_YET);
-    ANLG_Hardware_IsReady_ExpectAndReturn(4, STATUS_OK);
-    ANLG_Hardware_ReadChannel_ExpectAndReturn(4, 0x5678);
-    ANLG_Model_UpdateData_Expect(4, 0x5678);
-    ANLG_Hardware_IsReady_ExpectAndReturn(5, STATUS_NONE_YET);
 
     ANLG_Conductor_Run();
 }
@@ -73,8 +71,6 @@ void test_ANLG_Conductor_Run_should_SampleWhenNotExpired(void)
     ANLG_Hardware_IsReady_ExpectAndReturn(1, STATUS_NONE_YET);
     ANLG_Hardware_IsReady_ExpectAndReturn(2, STATUS_NONE_YET);
     ANLG_Hardware_IsReady_ExpectAndReturn(3, STATUS_NONE_YET);
-    ANLG_Hardware_IsReady_ExpectAndReturn(4, STATUS_NONE_YET);
-    ANLG_Hardware_IsReady_ExpectAndReturn(5, STATUS_NONE_YET);
 
     ANLG_Conductor_Run();
 }

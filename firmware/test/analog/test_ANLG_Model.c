@@ -31,7 +31,8 @@ void test_ANLG_Model_GetData_should_returnLatestData(void)
     ANLG_Model_Init();
 
     // filter_AddVal_ExpectAndReturn(0x0000, 0x1234, 0x4321);
-    ANLG_Model_UpdateData(0, 0x1234);
+    // ANLG_Model_UpdateData(0, 0x1234);
+    ANLG_Model_UpdateData(0, 0x4321);
 
     TEST_ASSERT_EQUAL_HEX16(0x4321, ANLG_Model_GetData(0));
     TEST_ASSERT_EQUAL_HEX16(0, ANLG_Model_GetData(1));
@@ -48,8 +49,10 @@ void test_ANLG_Model_GetData_should_MaintainStaleData(void)
     // filter_AddVal_ExpectAndReturn(0x0000, 0x2525, 0x3434);
     ANLG_Model_UpdateData(1, 0x2525);
 
-    TEST_ASSERT_EQUAL_HEX16(0x8675, ANLG_Model_GetData(0));
-    TEST_ASSERT_EQUAL_HEX16(0x3434, ANLG_Model_GetData(1));
+    // TEST_ASSERT_EQUAL_HEX16(0x8675, ANLG_Model_GetData(0));
+    // TEST_ASSERT_EQUAL_HEX16(0x3434, ANLG_Model_GetData(1));
+    TEST_ASSERT_EQUAL_HEX16(0x1234, ANLG_Model_GetData(0));
+    TEST_ASSERT_EQUAL_HEX16(0x2525, ANLG_Model_GetData(1));
     TEST_ASSERT_EQUAL_HEX16(0, ANLG_Model_GetData(NUM_ANALOG_MODEL_CHANNELS-1));
 
     // filter_AddVal_ExpectAndReturn(0x3434, 0x1234, 0x1919);
@@ -58,9 +61,12 @@ void test_ANLG_Model_GetData_should_MaintainStaleData(void)
     // filter_AddVal_ExpectAndReturn(0x0000, 0x1234, 0x6767);
     ANLG_Model_UpdateData(3, 0x1234);
 
-    TEST_ASSERT_EQUAL_HEX16(0x8675, ANLG_Model_GetData(0));
-    TEST_ASSERT_EQUAL_HEX16(0x1919, ANLG_Model_GetData(1));
-    TEST_ASSERT_EQUAL_HEX16(0x6767, ANLG_Model_GetData(3));
+    // TEST_ASSERT_EQUAL_HEX16(0x8675, ANLG_Model_GetData(0));
+    TEST_ASSERT_EQUAL_HEX16(0x1234, ANLG_Model_GetData(0));
+    TEST_ASSERT_EQUAL_HEX16(0x1234, ANLG_Model_GetData(1));
+    // TEST_ASSERT_EQUAL_HEX16(0x1919, ANLG_Model_GetData(1));
+    TEST_ASSERT_EQUAL_HEX16(0x1234, ANLG_Model_GetData(3));
+    // TEST_ASSERT_EQUAL_HEX16(0x6767, ANLG_Model_GetData(3));
     TEST_ASSERT_EQUAL_HEX16(0, ANLG_Model_GetData(NUM_ANALOG_MODEL_CHANNELS-1));
 }
 

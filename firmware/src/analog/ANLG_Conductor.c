@@ -4,7 +4,7 @@
 #include "TMR.h"
 #include <stdbool.h>
 
-void ANLG_Conductor_Init(uint8_t numChannels)
+void ANLG_Conductor_Init(void)
 {
     ANLG_Model_Init();
     ANLG_Hardware_Init();
