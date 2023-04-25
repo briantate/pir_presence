@@ -4,13 +4,22 @@
 #include "Defs.h"
 #include <stdbool.h>
 
-typedef struct MCP3221* mcp3221Handle;
-// typedef uint16_t (*ADC_GetVal_t)(void); //I2C read function injection
+typedef enum
+{
+    MCP3221_CONVERSION_PENDING = 0,
+    MCP3221_CONVERSION_COMPLETE = 1,
+    MCP3221_EVENT_ERROR = -1,
+}MCP3221_EVENT;
 
-STATUS_T MCP3221_BusInit(void);
-mcp3221Handle MCP3221_Create(uint16_t address);
-void MCP3221_Destroy(mcp3221Handle mcp3221);
-bool MCP3221_IsActive(mcp3221Handle mcp3221);
+typedef struct MCP3221* mcp3221Handle;
+typedef void (*MCP3221_Callback_t)(MCP3221_EVENT event);
+
+mcp3221Handle MCP3221_Open(uint16_t address, MCP3221_Callback_t cb);
+void MCP3221_Close(mcp3221Handle mcp3221);
+bool MCP3221_IsDeviceActive(mcp3221Handle mcp3221);
+bool MCP3221_StartConversion(mcp3221Handle mcp3221);
+bool MCP3221_IsConversionReady(mcp3221Handle mcp3221);
+uint16_t MCP3221_GetResult(mcp3221Handle mcp3221);
 
 
 #endif // MCP3221_H
