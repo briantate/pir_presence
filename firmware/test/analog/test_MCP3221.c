@@ -67,7 +67,31 @@ void test_MCP3221_StartConversion_Should_InitiateI2cRead(void)
     TEST_ASSERT_TRUE(MCP3221_StartConversion(mcp3221));
 }
 
-void test_MCP3221_IsConversionReady_Should_ReturnTrueIfReady(void){TEST_IGNORE_MESSAGE("Need to implement");}
-void test_MCP3221_GetResult_Should_ReturnLatestValue(void){TEST_IGNORE_MESSAGE("Need to implement");}
+extern void _I2CEventHandler (
+    DRV_I2C_TRANSFER_EVENT event,
+    DRV_I2C_TRANSFER_HANDLE transferHandle,
+    uintptr_t context
+);
+
+void test_MCP3221_IsConversionReady_Should_ReturnTrueIfReady(void)
+{
+    DRV_I2C_TRANSFER_HANDLE handle;
+
+    _I2CEventHandler( DRV_I2C_TRANSFER_EVENT_COMPLETE, handle, (uintptr_t)mcp3221);
+    TEST_ASSERT_TRUE(MCP3221_IsConversionReady(mcp3221));
+}
+
+
+void test_MCP3221_GetResult_Should_ReturnLatestValue(void)
+{
+    MCP3221_SetBuffer(mcp3221, 0xA5, 0x5A);
+    
+    DRV_I2C_TRANSFER_HANDLE handle;
+
+    _I2CEventHandler( DRV_I2C_TRANSFER_EVENT_COMPLETE, handle, (uintptr_t)mcp3221);
+
+    TEST_ASSERT_EQUAL_HEX16(0x5AA5, MCP3221_GetResult(mcp3221));
+
+}
 
 #endif // TEST

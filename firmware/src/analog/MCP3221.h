@@ -21,5 +21,9 @@ bool MCP3221_StartConversion(mcp3221Handle mcp3221);
 bool MCP3221_IsConversionReady(mcp3221Handle mcp3221);
 uint16_t MCP3221_GetResult(mcp3221Handle mcp3221);
 
+#ifdef TEST
+void MCP3221_SetBuffer(mcp3221Handle mcp3221, uint8_t val0, uint8_t val1);
+#endif /*TEST*/
+
 
 #endif // MCP3221_H

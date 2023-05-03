@@ -1,7 +1,7 @@
 #include "MCP3221.h"
-#include "drv_i2c.h"
+#include "../config/default/driver/i2c/drv_i2c.h"
 
-struct MCP3221
+STATIC struct MCP3221
 {
     bool isActive;
     DRV_HANDLE i2cDriverHandle;
@@ -19,7 +19,7 @@ static uint8_t numberOfMcp3221 = 0;
 
 /* Private prototypes*/
 
-void _I2CEventHandler (
+STATIC void _I2CEventHandler (
     DRV_I2C_TRANSFER_EVENT event,
     DRV_I2C_TRANSFER_HANDLE transferHandle,
     uintptr_t context
@@ -27,6 +27,14 @@ void _I2CEventHandler (
 
 
 /* Public API*/
+
+#ifdef TEST
+void MCP3221_SetBuffer(mcp3221Handle mcp3221, uint8_t val0, uint8_t val1)
+{
+    mcp3221->buffer[0] = val0;
+    mcp3221->buffer[1] = val1;
+}
+#endif /*TEST*/
 
 mcp3221Handle MCP3221_Open(uint16_t address, MCP3221_Callback_t cb)
 {
@@ -48,11 +56,13 @@ mcp3221Handle MCP3221_Open(uint16_t address, MCP3221_Callback_t cb)
                     _I2CEventHandler,
                     (uintptr_t)mcp3221
                 );
+                
                 mcp3221->isActive = true;
                 mcp3221->value = 0;
                 mcp3221->isConversionReady = false;
                 mcp3221->address = address;
                 mcp3221->cb = cb;
+                numberOfMcp3221++;
                 return mcp3221;
             }
         }
@@ -62,12 +72,16 @@ mcp3221Handle MCP3221_Open(uint16_t address, MCP3221_Callback_t cb)
 
 void MCP3221_Close(mcp3221Handle mcp3221)
 {
-    DRV_I2C_Close(mcp3221->i2cDriverHandle);
-    mcp3221->address = 0;
-    mcp3221->value = 0;
-    mcp3221->isConversionReady = false;
-    mcp3221->cb = NULL;
-    mcp3221->isActive = false;
+    if(mcp3221->isActive)
+    {
+        DRV_I2C_Close(mcp3221->i2cDriverHandle);
+        mcp3221->address = 0;
+        mcp3221->value = 0;
+        mcp3221->isConversionReady = false;
+        mcp3221->cb = NULL;
+        mcp3221->isActive = false;
+        numberOfMcp3221--;
+    }   
 }
 
 bool MCP3221_IsDeviceActive(mcp3221Handle mcp3221)
@@ -85,6 +99,11 @@ bool MCP3221_StartConversion(mcp3221Handle mcp3221)
     return true;
 }
 
+bool MCP3221_IsConversionReady(mcp3221Handle mcp3221)
+{
+    return mcp3221->isConversionReady;
+}
+
 uint16_t MCP3221_GetResult(mcp3221Handle mcp3221)
 {
     mcp3221->isConversionReady = false;
@@ -94,7 +113,7 @@ uint16_t MCP3221_GetResult(mcp3221Handle mcp3221)
 
 /* Private functions*/
 
-void _I2CEventHandler (
+STATIC void _I2CEventHandler (
     DRV_I2C_TRANSFER_EVENT event,
     DRV_I2C_TRANSFER_HANDLE transferHandle,
     uintptr_t context
@@ -112,7 +131,7 @@ void _I2CEventHandler (
     }
     else
     {
-        mcpEvent = MCP3221_EVENT_ERROR;
+        mcpEvent = event;
     }
 
     if(mcp3221->cb)
