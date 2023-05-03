@@ -19,12 +19,8 @@ import platform
 #Modify input start
 MISRATOOL = "\"C:/Program Files/Microchip/MPLABX/v6.05/mplab_platform/bin/misracli.bat\""
 XCLICENSEMANAGER = "\"C:/Program Files/Microchip/MPLABX/v6.05/mplab_platform/bin/xclm.exe\""
-checkDetails = [["app", "../../firmware/src/app/*.c"], \
-                ["digital", "../../firmware/src/digital/*.c"], \
-                ["led", "../../firmware/src/led/*.c"], \
-                ["timer", "../../firmware/src/timer/*.c"], \
-                ["command", "../../firmware/src/command/*.c"], \
-                ["analog", "../../firmware/src/analog/*.c"]]
+checkDetails = [["analog", "../../firmware/src/analog/*.c"], \
+                ["PIR", "../../firmware/src/PIR/*.c"]]
 #Modify input ends
 
 def run_misra_checks(name, source_path):
