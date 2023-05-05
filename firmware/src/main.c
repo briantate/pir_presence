@@ -28,6 +28,7 @@
 #include "definitions.h"                // SYS function prototypes
 #include "MCP3221.h"
 mcp3221Handle mcp3221;
+uint16_t adc_count;
 
 bool isConversionComplete;
 
@@ -61,6 +62,7 @@ int main ( void )
     /* Initialize all modules */
     SYS_Initialize ( NULL );
     isConversionComplete = false;
+    ADC0_Enable();
     printf("PIR presence detection\r\n");
     
     mcp3221 = MCP3221_Open(0x4D, MyMCP3221_Callback);
@@ -90,6 +92,18 @@ int main ( void )
         }
         isConversionComplete = false;
         printf("val = %d \r\n",MCP3221_GetResult(mcp3221));
+        
+        ADC0_ConversionStart();
+
+        /* Wait till ADC conversion result is available */
+        while(!ADC0_ConversionStatusGet())
+        {
+
+        };
+
+        /* Read the ADC result */
+        adc_count = ADC0_ConversionResultGet();
+        printf("adc = %d \r\n",adc_count);
         
     }
 
