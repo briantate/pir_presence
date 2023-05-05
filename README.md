@@ -28,7 +28,9 @@
     * CMSIS 5.8.0
     * SAME51_DFP 3.6.130
 * Harmony package versions:
-    * 
+    * csp 3.16.0
+    * core 3.12.0
+    * dev_packs 3.16.0
 
 # Block diagram
 
