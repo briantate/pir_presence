@@ -29,11 +29,14 @@
 #include "MCP3221.h"
 mcp3221Handle mcp3221;
 
+bool isConversionComplete;
+
 void MyMCP3221_Callback(MCP3221_EVENT event)
 {
     if (MCP3221_CONVERSION_COMPLETE == event)
     {
-        printf("val = %d \r\n",MCP3221_GetResult(mcp3221));
+//        printf("val = %d \r\n",MCP3221_GetResult(mcp3221));
+        isConversionComplete = true;
     }
     else if(MCP3221_CONVERSION_PENDING == event)
     {
@@ -57,6 +60,7 @@ int main ( void )
 {
     /* Initialize all modules */
     SYS_Initialize ( NULL );
+    isConversionComplete = false;
     printf("PIR presence detection\r\n");
     
     mcp3221 = MCP3221_Open(0x4D, MyMCP3221_Callback);
@@ -80,6 +84,13 @@ int main ( void )
         }
         LED0_Toggle();
         MCP3221_StartConversion(mcp3221);
+        while(!isConversionComplete)
+        {
+            __asm("NOP");
+        }
+        isConversionComplete = false;
+        printf("val = %d \r\n",MCP3221_GetResult(mcp3221));
+        
     }
 
     /* Execution should not come here during normal operation */
