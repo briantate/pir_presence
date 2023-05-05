@@ -65,6 +65,7 @@ void BusFault_Handler (void);
 void UsageFault_Handler (void);
 void DebugMonitor_Handler (void);
 void SERCOM2_I2C_InterruptHandler (void);
+void SERCOM5_USART_InterruptHandler (void);
 
 
 

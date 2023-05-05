@@ -1,7 +1,7 @@
 "Pin Number","Pin ID","Custom Name","Function","Mode", "Direction","Latch","Pull Up","Pull Down","Drive Strength"
 1,PA00,,Available,,,,,,NORMAL
 2,PA01,,Available,,,,,,NORMAL
-3,PA02,,Available,,,,,,NORMAL
+3,PA02,PIR,ADC0_AIN0,Analog,High Impedance,n/a,,,NORMAL
 4,PA03,,Available,,,,,,NORMAL
 5,PB04,,Available,,,,,,NORMAL
 6,PB05,,Available,,,,,,NORMAL

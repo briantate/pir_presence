@@ -65,6 +65,10 @@
 // *****************************************************************************
 // *****************************************************************************
 
+/*** Macros for PIR pin ***/
+#define PIR_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 2U)) & 0x01U)
+#define PIR_PIN                  PORT_PIN_PA02
+
 /*** Macros for I2C_SDA pin ***/
 #define I2C_SDA_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 12U)) & 0x01U)
 #define I2C_SDA_PIN                  PORT_PIN_PA12

@@ -239,6 +239,7 @@ void SYS_Initialize ( void* data )
 
     EVSYS_Initialize();
 
+    ADC0_Initialize();
     SERCOM5_USART_Initialize();
 
 
