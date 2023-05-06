@@ -27,19 +27,23 @@
 #include <stdlib.h>                     // Defines EXIT_FAILURE
 #include "definitions.h"                // SYS function prototypes
 #include "MCP3221.h"
+#include "analog/MCP3221.h"
+
+#define MOTION_DETECT_THRESHOLD (2500)
+
+#define ADC_METHOD_MCP3221
+
 mcp3221Handle mcp3221;
-uint16_t adc_count;
 
 bool isConversionComplete;
 
 void MyMCP3221_Callback(MCP3221_EVENT event)
 {
-    if (MCP3221_CONVERSION_COMPLETE == event)
+    if (MCP3221_EVENT_CONVERSION_COMPLETE == event)
     {
-//        printf("val = %d \r\n",MCP3221_GetResult(mcp3221));
         isConversionComplete = true;
     }
-    else if(MCP3221_CONVERSION_PENDING == event)
+    else if(MCP3221_EVENT_CONVERSION_PENDING == event)
     {
         printf("Conversion pending \r\n");
     }
@@ -63,13 +67,13 @@ int main ( void )
     SYS_Initialize ( NULL );
     isConversionComplete = false;
     ADC0_Enable();
-    printf("PIR presence detection\r\n");
+    puts("PIR presence detection\r\n");
     
     mcp3221 = MCP3221_Open(0x4D, MyMCP3221_Callback);
     
     if(0 == mcp3221)
     {
-        printf("error opening MCP3221\r\n");
+        puts("error opening MCP3221\r\n");
     }
     else
     {
@@ -78,21 +82,40 @@ int main ( void )
     
     while ( true )
     {
+        uint16_t mcpVal = 0;
+        uint16_t adcVal = 0;
         /* Maintain state machines of all polled MPLAB Harmony modules. */
         SYS_Tasks ( );
+        
+        
         for(i = 0; i<10000000; i++)
         {
             __asm("NOP");
         }
         LED0_Toggle();
-        MCP3221_StartConversion(mcp3221);
-        while(!isConversionComplete)
+        
+#ifdef ADC_METHOD_MCP3221
+        MCP3221_ConversionStart(mcp3221);
+        while(!MCP3221_ConversionStatusGet(mcp3221))
         {
             __asm("NOP");
         }
-        isConversionComplete = false;
-        printf("val = %d \r\n",MCP3221_GetResult(mcp3221));
+
+        if(MCP3221_EVENT_CONVERSION_COMPLETE == MCP3221_ConversionStatusGet(mcp3221))
+        {    
+            mcpVal = MCP3221_ConversionResultGet(mcp3221);
+//            printf("val = %d \r\n", mcpVal);
+        }
+        else
+        {
+            puts("MCP3221 conversion error\r\n");
+        }
         
+        if(MOTION_DETECT_THRESHOLD < mcpVal)
+        {
+            puts("MCP motion detected \r\n");
+        }
+#else                 
         ADC0_ConversionStart();
 
         /* Wait till ADC conversion result is available */
@@ -102,9 +125,13 @@ int main ( void )
         };
 
         /* Read the ADC result */
-        adc_count = ADC0_ConversionResultGet();
-        printf("adc = %d \r\n",adc_count);
-        
+        adcVal = ADC0_ConversionResultGet();
+//        printf("adc = %d \r\n",adcVal);
+        if(MOTION_DETECT_THRESHOLD < adcVal)
+        {
+            puts("ADC motion detected\r\n");
+        }
+#endif  
     }
 
     /* Execution should not come here during normal operation */

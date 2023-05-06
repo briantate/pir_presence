@@ -64,7 +64,7 @@ void test_MCP3221_StartConversion_Should_InitiateI2cRead(void)
 {
 
     DRV_I2C_ReadTransferAdd_ExpectAnyArgs();
-    TEST_ASSERT_TRUE(MCP3221_StartConversion(mcp3221));
+    TEST_ASSERT_TRUE(MCP3221_ConversionStart(mcp3221));
 }
 
 extern void _I2CEventHandler (
@@ -73,12 +73,21 @@ extern void _I2CEventHandler (
     uintptr_t context
 );
 
-void test_MCP3221_IsConversionReady_Should_ReturnTrueIfReady(void)
+void test_MCP3221_ConversionStatusGet_Should_ReturnConversionStatus(void)
 {
     DRV_I2C_TRANSFER_HANDLE handle;
 
+    _I2CEventHandler( DRV_I2C_TRANSFER_EVENT_PENDING, handle, (uintptr_t)mcp3221);
+    TEST_ASSERT_EQUAL(MCP3221_EVENT_CONVERSION_PENDING, MCP3221_ConversionStatusGet(mcp3221));
+
     _I2CEventHandler( DRV_I2C_TRANSFER_EVENT_COMPLETE, handle, (uintptr_t)mcp3221);
-    TEST_ASSERT_TRUE(MCP3221_IsConversionReady(mcp3221));
+    TEST_ASSERT_EQUAL(MCP3221_EVENT_CONVERSION_COMPLETE, MCP3221_ConversionStatusGet(mcp3221));
+
+    _I2CEventHandler(DRV_I2C_TRANSFER_EVENT_ERROR , handle, (uintptr_t)mcp3221);
+    TEST_ASSERT_EQUAL(MCP3221_EVENT_CONVERSION_ERROR, MCP3221_ConversionStatusGet(mcp3221));
+
+    _I2CEventHandler(DRV_I2C_TRANSFER_EVENT_HANDLE_INVALID , handle, (uintptr_t)mcp3221);
+    TEST_ASSERT_EQUAL(MCP3221_EVENT_HANDLE_INVALID, MCP3221_ConversionStatusGet(mcp3221));
 }
 
 
@@ -90,8 +99,10 @@ void test_MCP3221_GetResult_Should_ReturnLatestValue(void)
 
     _I2CEventHandler( DRV_I2C_TRANSFER_EVENT_COMPLETE, handle, (uintptr_t)mcp3221);
 
-    TEST_ASSERT_EQUAL_HEX16(0x5AA5, MCP3221_GetResult(mcp3221));
+    TEST_ASSERT_EQUAL_HEX16(0x5AA5, MCP3221_ConversionResultGet(mcp3221));
 
 }
+
+
 
 #endif // TEST
