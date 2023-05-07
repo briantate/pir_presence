@@ -1,5 +1,5 @@
 #include "ANLG_Adapter.h"
-#include "plib_adc0.h"
+#include "peripheral/adc/plib_adc0.h"
 #include "Defs.h"
 
 STATIC bool isConversionComplete;
