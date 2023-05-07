@@ -93,13 +93,13 @@ void test_MCP3221_ConversionStatusGet_Should_ReturnConversionStatus(void)
 
 void test_MCP3221_GetResult_Should_ReturnLatestValue(void)
 {
-    MCP3221_SetBuffer(mcp3221, 0xA5, 0x5A);
+    MCP3221_SetBuffer(mcp3221, 0x05, 0x5A);
     
     DRV_I2C_TRANSFER_HANDLE handle;
 
     _I2CEventHandler( DRV_I2C_TRANSFER_EVENT_COMPLETE, handle, (uintptr_t)mcp3221);
 
-    TEST_ASSERT_EQUAL_HEX16(0x5AA5, MCP3221_ConversionResultGet(mcp3221));
+    TEST_ASSERT_EQUAL_HEX16(0x055A, MCP3221_ConversionResultGet(mcp3221));
 
 }
 
