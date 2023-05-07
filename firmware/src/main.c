@@ -32,7 +32,6 @@
 
 #define MOTION_DETECT_THRESHOLD (2500)
 
-
 // *****************************************************************************
 // *****************************************************************************
 // Section: Main Entry Point
@@ -53,10 +52,12 @@ int main ( void )
         /* Maintain state machines of all polled MPLAB Harmony modules. */
         SYS_Tasks ( );
         
+        //Poor mans delay timer
         for(i = 0; i<10000000; i++)
         {
             __asm("NOP");
         }
+        
         LED0_Toggle();
         
         if(PIR_IsPresent())
@@ -70,6 +71,7 @@ int main ( void )
 
     return ( EXIT_FAILURE );
 }
+
 
 
 /*******************************************************************************
