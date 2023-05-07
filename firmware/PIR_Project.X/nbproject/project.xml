@@ -10,6 +10,7 @@
             <make-dep-projects/>
             <sourceRootList>
                 <sourceRootElem>../src/analog</sourceRootElem>
+                <sourceRootElem>../src/PIR</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

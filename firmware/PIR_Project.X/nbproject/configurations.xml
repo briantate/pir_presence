@@ -4,6 +4,10 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <logicalFolder name="analog" displayName="analog" projectFiles="true">
+        <itemPath>../src/analog/ANLG_Adapter.h</itemPath>
+        <itemPath>../src/analog/MCP3221.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="config" displayName="config" projectFiles="true">
         <logicalFolder name="default" displayName="default" projectFiles="true">
           <logicalFolder name="driver" displayName="driver" projectFiles="true">
@@ -223,6 +227,7 @@
                    projectFiles="true">
       <logicalFolder name="analog" displayName="analog" projectFiles="true">
         <itemPath>../src/analog/MCP3221.c</itemPath>
+        <itemPath>../src/analog/ANLG_Adapter_MCP3221.c</itemPath>
       </logicalFolder>
       <logicalFolder name="config" displayName="config" projectFiles="true">
         <logicalFolder name="default" displayName="default" projectFiles="true">
@@ -281,6 +286,9 @@
           <itemPath>../src/config/default/exceptions.c</itemPath>
         </logicalFolder>
       </logicalFolder>
+      <logicalFolder name="PIR" displayName="PIR" projectFiles="true">
+        <itemPath>../src/PIR/PIR_CLICK.c</itemPath>
+      </logicalFolder>
       <itemPath>../src/config/default/pin_configurations.csv</itemPath>
       <itemPath>../src/main.c</itemPath>
     </logicalFolder>
@@ -293,6 +301,7 @@
   </logicalFolder>
   <sourceRootList>
     <Elem>../src/analog</Elem>
+    <Elem>../src/PIR</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -341,14 +350,13 @@
       <C32>
         <property key="additional-warnings" value="true"/>
         <property key="addresss-attribute-use" value="false"/>
-        <property key="appendMe" value=""/>
         <property key="enable-app-io" value="false"/>
         <property key="enable-omit-frame-pointer" value="false"/>
         <property key="enable-symbols" value="true"/>
         <property key="enable-unroll-loops" value="false"/>
         <property key="exclude-floating-point" value="false"/>
         <property key="extra-include-directories"
-                  value="../src;../src/config/default;../src/packs/ATSAME51J20A_DFP;../src/packs/CMSIS/;../src/packs/CMSIS/CMSIS/Core/Include;..\src\analog"/>
+                  value="../src;../src/config/default;../src/packs/ATSAME51J20A_DFP;../src/packs/CMSIS/;../src/packs/CMSIS/CMSIS/Core/Include;..\src\analog;..\src\PIR"/>
         <property key="generate-16-bit-code" value="false"/>
         <property key="generate-micro-compressed-code" value="false"/>
         <property key="isolate-each-function" value="true"/>
@@ -398,7 +406,6 @@
         <property key="additional-options-use-response-files" value="false"/>
         <property key="additional-options-write-sla" value="false"/>
         <property key="allocate-dinit" value="false"/>
-        <property key="appendMe" value=""/>
         <property key="code-dinit" value="false"/>
         <property key="ebase-addr" value=""/>
         <property key="enable-check-sections" value="false"/>
@@ -438,7 +445,6 @@
       <C32CPP>
         <property key="additional-warnings" value="false"/>
         <property key="addresss-attribute-use" value="false"/>
-        <property key="appendMe" value=""/>
         <property key="check-new" value="false"/>
         <property key="eh-specs" value="true"/>
         <property key="enable-app-io" value="false"/>
@@ -467,7 +473,6 @@
         <property key="use-indirect-calls" value="false"/>
       </C32CPP>
       <C32Global>
-        <property key="appendMe" value=""/>
         <property key="common-include-directories" value=""/>
         <property key="gp-relative-option" value=""/>
         <property key="legacy-libc" value="false"/>
