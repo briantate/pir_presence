@@ -174,6 +174,25 @@ SYSTEM_OBJECTS sysObj;
 // Section: System Initialization
 // *****************************************************************************
 // *****************************************************************************
+// <editor-fold defaultstate="collapsed" desc="SYS_TIME Initialization Data">
+
+const SYS_TIME_PLIB_INTERFACE sysTimePlibAPI = {
+    .timerCallbackSet = (SYS_TIME_PLIB_CALLBACK_REGISTER)SYSTICK_TimerCallbackSet,
+    .timerStart = (SYS_TIME_PLIB_START)SYSTICK_TimerStart,
+    .timerStop = (SYS_TIME_PLIB_STOP)SYSTICK_TimerStop,
+    .timerFrequencyGet = (SYS_TIME_PLIB_FREQUENCY_GET)SYSTICK_TimerFrequencyGet,
+    .timerInterruptEnable = (SYS_TIME_PLIB_INTERRUPT_ENABLE)SYSTICK_TimerInterruptEnable,
+    .timerInterruptDisable = (SYS_TIME_PLIB_INTERRUPT_DISABLE)SYSTICK_TimerInterruptDisable,
+    .timerPeriodSet = (SYS_TIME_PLIB_PERIOD_SET)SYSTICK_TimerPeriodSet,
+};
+
+const SYS_TIME_INIT sysTimeInitData =
+{
+    .timePlib = &sysTimePlibAPI,
+    .hwTimerIntNum = SysTick_IRQn,
+};
+
+// </editor-fold>
 
 
 
@@ -239,13 +258,15 @@ void SYS_Initialize ( void* data )
 
     EVSYS_Initialize();
 
-    ADC0_Initialize();
+	SYSTICK_TimerInitialize();
     SERCOM5_USART_Initialize();
 
+    ADC0_Initialize();
 
     /* Initialize I2C0 Driver Instance */
     sysObj.drvI2C0 = DRV_I2C_Initialize(DRV_I2C_INDEX_0, (SYS_MODULE_INIT *)&drvI2C0InitData);
 
+    sysObj.sysTime = SYS_TIME_Initialize(SYS_TIME_INDEX_0, (SYS_MODULE_INIT *)&sysTimeInitData);
 
 
     NVIC_Initialize();
