@@ -20,7 +20,7 @@ void ANLG_DeInit(void)
 
 uint16_t ANLG_ConversionResultGet(void)
 {
-    if(isConversionComplete)
+    if(true == isConversionComplete)
     {
         ADC0_ConversionStart();
 

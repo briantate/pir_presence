@@ -349,8 +349,22 @@
         <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
       </makeCustomizationType>
       <item path="../src/analog/ANLG_Adapter_ADC0.c" ex="true" overriding="false">
+        <C32>
+        </C32>
+        <C32-AR>
+        </C32-AR>
+        <C32-AS>
+        </C32-AS>
+        <C32-CO>
+        </C32-CO>
+        <C32-LD>
+        </C32-LD>
+        <C32CPP>
+        </C32CPP>
+        <C32Global>
+        </C32Global>
       </item>
-      <item path="../src/analog/ANLG_Adapter_MCP3221.c" ex="false" overriding="false">
+      <item path="../src/analog/ANLG_Adapter_MCP3221.c" ex="true" overriding="false">
         <C32>
         </C32>
         <C32-AR>
