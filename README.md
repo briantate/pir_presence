@@ -9,16 +9,17 @@
 | media               | png, etc...                                                |
 | tools               | MISRA check script, etc...                                 |
 
-# Hardware required
+# Hardware Setup
 
 ![image](media/HardwarePhoto.png)
 
 * Curiosity Nano Base For Click Boards
-    * 
 * SAME51 CNANO
-    * 
 * PIR Click
-    * 
+* USB micro B cable
+    * connect this to the SAME51 CNANO's USB connection
+    * Provides debugger
+    * Provides USB-to-UART prints statements from the SAME51 @ 115200 BAUD 8N1
 
 # Block diagram
 
@@ -32,7 +33,9 @@
 
 ![image](media/ProjectGraph.png)
 
-# Project operation
+
+
+# Hardware operation
 
 ## Sensor output:
 
@@ -46,7 +49,13 @@ The sensor goes through 2 gain/filter stages producing an inverted and easily ra
 
 The analog output provided by the gain/filter stages is presented in 2 ways. The first is to the Microchip MCP3221 I2C ADC. The second is to the analog pin of the click board which is routed to an native ADC capable pin on the host microcontroller. 
 
-## Firmware implementation
+
+
+# Firmware Operation
+
+The firmware will sample the conditioned signal output through one of two ADC's. Either the MCP3221 external I2C ADC or the microcontrollers internal ADC. Selection is described below. To determine occupancy, periodic samples are taken, analyzed, and compared against a fixed threshold. Since the conditioned output seems to hit both rails when a warm body approaches or retracts (described above), it is sufficient to compare against a high or low threshold. A high threshold was chosen for this project. In this test project, occupancy is indicated through the ASCII string "motion detected" printed to the serial terminal. 
+
+![image](media/TerminalOutput.png)
 
 ## Selecting the desired ADC method
 
